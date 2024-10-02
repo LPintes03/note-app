@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NoteController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('frontend.index');
+// });
 
 
-Route::get('/home', [NoteController::class, 'showNotes']);
-
+Route::get('', [NoteController::class, 'showNotes']);
+Route::get('/create', [NoteController::class, 'create']);
+Route::post('/create', [NoteController::class, 'store']);
