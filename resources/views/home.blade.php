@@ -16,14 +16,51 @@
             Note App
         </x-slot>
 
-        <div class="py-3">
-            <div class="container">
-                <h4>Welcoome to IIndex Pages</h4>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12">
+
+                    @if (session('status'))
+                    <div class="alert alert-success">{{session('status') }}</div>
+
+                    @endif
+
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>My Notes
+                                <a href="{{ url ('/create') }}" class="btn btn-dark float-end">New Note</a>
+                            </h4>
+                        </div>
+                        <div class="card-body">
+
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+
+                                </thead>
+                                <tbody class="table-group-divider"> 
+                                    @foreach ($notes as $item)
+                                    <tr>
+                                        <td>{{ $item->title }} <br> {{ $item->content }}</td>
+                                        <td>
+                                            <a href="{{ url('/edit/'.$item->id) }}" class="btn btn-success mx-2">Edit</a>
+                                            <a href="{{ url('/delete/'.$item->id) }}" class="btn btn-danger mx-1" onclick="return confirm('Are you sure?')">Delete</a>
+                                        </td>
+                                            
+                                    </tr>
+                                        @endforeach
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-
-        </x-app-web-layout>
+            </x-app-web-layout>
 
 
 </body>

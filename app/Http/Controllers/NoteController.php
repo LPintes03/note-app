@@ -11,9 +11,8 @@ class NoteController extends Controller
     
     public function showNotes()
     {
-        // It's better to return a view with data, rather than just the view.
-        // For example, you could return a list of notes.
-        $notes = Note::all();
+        $notes = Note::get();
+       
         return view('home', compact('notes'));
     }
 
@@ -31,11 +30,44 @@ class NoteController extends Controller
             'content' => 'required|max:10000|string'
         ]);
 
-        try {
-            $note = Note::create($request->only(['title', 'content']));
-            return redirect('/create')->with('status', 'Note Saved');
-        } catch (\Exception $e) {
-            return redirect('/create')->with('error', 'Failed to save note');
-        }
+        Note::create([
+            'title' => $request->title,
+            'content' => $request->content
+        ]);
+            
+        return redirect('/create')->with('status', 'Note Saved');
+        
+    }
+
+    public function edit(int $id){
+        $note = Note::findorFail($id);
+        // return $note;
+        return view('edit', compact('note'));
+
+    }
+
+    public function update(Request $request, int $id){
+
+        $request->validate([
+            'title' => 'required|max:255|string',
+            'content' => 'required|max:10000|string'
+        ]);
+
+        Note::findOrFail($id)->update([
+            'title' => $request->title,
+            'content' => $request->content
+        ]);
+            
+        return redirect()->back()->with('status', 'Note Updated');
+        
+    }
+
+    public function destroy(int $id){
+        $note = Note::findOrFail($id);
+        $note->delete();
+
+        return redirect()->back()->with('status', 'Note Deleted');
+
     }
 }
+
