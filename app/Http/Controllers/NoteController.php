@@ -11,9 +11,9 @@ class NoteController extends Controller
     
     public function showNotes()
     {
-        $notes = Note::get();
+        $notes = Note::orderBy('updated_at', 'desc')->get();
        
-        return view('home', compact('notes'));
+        return view('home', ['notes' => $notes]);
     }
 
     
@@ -23,40 +23,59 @@ class NoteController extends Controller
     }
 
     
-    public function store(Request $request)
+    public function createSubmission(Request $request)
     {
-        $request->validate([
-            'title' => 'required|max:255|string',
-            'content' => 'required|max:10000|string'
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'content' => 'required|string|max:10000',
+        ], [
+            'title.max' => 'The title may not be greater than 255 characters.',
+            'description.max' => 'The description may not be greater than 255 characters.',
+            'content.max' => 'The content may not be greater than 10,000 characters.',
         ]);
-
+    
         Note::create([
-            'title' => $request->title,
-            'content' => $request->content
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'content' => $validated['content']
         ]);
-            
-        return redirect('/create')->with('status', 'Note Saved');
-        
+    
+        return redirect()->route('createNote')->with('status', 'Note Saved.');
     }
-
-    public function edit(int $id){
-        $note = Note::findorFail($id);
-        // return $note;
-        return view('edit', compact('note'));
-
+    
+    public function edit(int $id)
+    {
+        $note = Note::findOrFail($id);
+    
+        if (!$note) {
+            return redirect()->route('home')->with('error', 'Note not found.');
+        }
+    
+        return view('edit', ['note' => $note]);
     }
 
     public function update(Request $request, int $id){
-
-        $request->validate([
-            'title' => 'required|max:255|string',
-            'content' => 'required|max:10000|string'
+        
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'content' => 'required|string|max:10000',
+        ], [
+            'title.max' => 'The title may not be greater than 255 characters.',
+            'description.max' => 'The description may not be greater than 255 characters.',
+            'content.max' => 'The content may not be greater than 10,000 characters.',
+        ]);
+        
+        $note = Note::findOrFail($id)->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'content' => $validated['content']
         ]);
 
-        Note::findOrFail($id)->update([
-            'title' => $request->title,
-            'content' => $request->content
-        ]);
+        if (!$note){
+            return redirect()->route('home')->with('error', 'Note not found.');
+        }
             
         return redirect()->back()->with('status', 'Note Updated');
         

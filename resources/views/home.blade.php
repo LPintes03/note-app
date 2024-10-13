@@ -31,7 +31,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>My Notes
-                                <a href="{{ url ('/create') }}" class="btn btn-dark float-end">New Note</a>
+                                <a href="{{ route ('createNote') }}" class="btn btn-dark float-end">New Note</a>
                             </h4>
                         </div>
                         <div class="card-body">
@@ -41,12 +41,12 @@
 
                                 </thead>
                                 <tbody class="table-group-divider"> 
-                                    @foreach ($notes as $item)
+                                    @foreach ($notes as $note)
                                     <tr>
-                                        <td>{{ $item->title }} <br> {{ $item->content }}</td>
+                                        <td>{{ $note->title }} <br> {{ $note->description }}</td>
                                         <td>
-                                            <a href="{{ url('/edit/'.$item->id) }}" class="btn btn-success mx-2">Edit</a>
-                                            <a href="{{ url('/delete/'.$item->id) }}" class="btn btn-danger mx-1" onclick="return confirm('Are you sure?')">Delete</a>
+                                            <a href="{{ route('editNote', ['id' => $note->id]) }}" class="btn btn-success mx-2">Edit</a>
+                                            <a href="{{ route('deleteNote', ['id' => $note->id]) }}" class="btn btn-danger mx-1" onclick="return confirm('Are you sure?')">Delete</a>
                                         </td>
                                             
                                     </tr>

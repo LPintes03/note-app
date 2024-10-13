@@ -8,9 +8,9 @@ use App\Http\Controllers\NoteController;
 // });
 
 
-Route::get('/', [NoteController::class, 'showNotes']);
-Route::get('/create', [NoteController::class, 'create']);
-Route::post('/create', [NoteController::class, 'store']);
-Route::get('/edit/{id}', [NoteController::class, 'edit']);
-Route::put('/edit/{id}', [NoteController::class, 'update']);
-Route::get('/delete/{id}', [NoteController::class, 'destroy']);
+Route::get('/', [NoteController::class, 'showNotes'])->name('home');
+Route::get('/note/create', [NoteController::class, 'create'])->name('createNote');
+Route::post('/note/create', [NoteController::class, 'createSubmission'])->name('createNoteSubmission');
+Route::get('/note/edit/{id}', [NoteController::class, 'edit'])->name('editNote');
+Route::put('/note/edit/{id}', [NoteController::class, 'update'])->name('updateNote');
+Route::get('/note/delete/{id}', [NoteController::class, 'destroy'])->name('deleteNote');

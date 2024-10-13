@@ -19,6 +19,7 @@ class NoteFactory extends Factory
     {
         return [
             'title' => fake()->title(), 
+            'description' => fake()->text(),
             'content'=> Str::random(1000)
         ];
     }

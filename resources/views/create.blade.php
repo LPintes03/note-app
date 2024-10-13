@@ -21,8 +21,18 @@
                 <div class="col-md-12">
 
                     @if (session('status'))
-                        <div class="alert alert-success">{{session('status') }}</div>
+                    <div class="alert alert-success">{{session('status') }}</div>
 
+                    @endif
+
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
 
 
@@ -30,17 +40,23 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>Add Notes
-                                <a href="{{ url ('/home') }}" class="btn btn-dark float-end">Back</a>
+                                <a href="{{ route ('home') }}" class="btn btn-dark float-end">Back</a>
                             </h4>
                         </div>
                         <div class="card-body">
                             <!-- Form -->
-                            <form action="{{ url('create') }}" method="POST">
+                            <form action="{{ route ('createNoteSubmission') }}" method="POST">
                                 @csrf
                                 <!-- Title -->
                                 <div class="mb-3">
                                     <label>Title</label>
                                     <input type="text" name="title" value="{{ old('title') }}" />
+
+                                </div>
+                                <!-- Description -->
+                                <div class="mb-3">
+                                    <label>Description</label>
+                                    <textarea name="description" class="form-control" rows="3">{{ old('description') }}</textarea>
 
                                 </div>
                                 <!-- Content -->

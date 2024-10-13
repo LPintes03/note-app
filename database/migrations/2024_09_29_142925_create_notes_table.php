@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('content');
+            $table->string('description');
+            $table->text('content');
             $table->timestamps();
         });
     }
+        
 
     /**
      * Reverse the migrations.
